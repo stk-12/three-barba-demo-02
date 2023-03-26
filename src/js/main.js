@@ -28,6 +28,8 @@ class Main {
 
     this.group = new THREE.Group();
 
+    this.isRotation = true;
+
     this.uniforms = {
       uTime: {
         value: 0.0
@@ -37,21 +39,17 @@ class Main {
       },
       //振幅
       uWave: {
-        value: 20.0
+        value: 0.0
       },
       //周波数
       uFrequency: {
-        value: 0.05
+        value: 0.0
       },
       uColor1: {
-        // value: new THREE.Color(0xd43f8c)
-        // value: new THREE.Color(0xf83600)
-        value: new THREE.Color(0x16a085)
+        value: new THREE.Color(0xd43f8c)
       },
       uColor2: {
-        // value: new THREE.Color(0x014fc4)
-        // value: new THREE.Color(0xf9d423)
-        value: new THREE.Color(0xf4d03f)
+        value: new THREE.Color(0x014fc4)
       },
     };
 
@@ -84,26 +82,6 @@ class Main {
   }
 
   _addMesh() {
-    // //ジオメトリ
-    // this.geometry = new THREE.PlaneGeometry(this.viewport.width, this.viewport.height, 40, 40);
-
-    // //テクスチャ
-    // const loader = new THREE.TextureLoader();
-    // this.uniforms.uTex.value = loader.load(img);
-
-    // console.log(this.texture);
-
-    // //マテリアル
-    // this.material = new THREE.ShaderMaterial({
-    //   uniforms: this.uniforms,
-    //   vertexShader: vertexSource,
-    //   fragmentShader: fragmentSource,
-    //   side: THREE.DoubleSide
-    // });
-
-    // //メッシュ
-    // this.mesh = new THREE.Mesh(this.geometry, this.material);
-    // this.scene.add(this.mesh);
 
     //ジオメトリ
     // this.geometry = new THREE.SphereGeometry(this.viewport.height * 0.4, 128, 128);
@@ -138,6 +116,10 @@ class Main {
     const elapsedTime = this.clock.getElapsedTime();
     this.uniforms.uTime.value = elapsedTime;
 
+    if(this.isRotation) {
+      this.mesh.rotation.y -= 0.001;
+    }
+
     //レンダリング
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(this._update.bind(this));
@@ -157,11 +139,11 @@ class Main {
     this.cameraDistance = (this.viewport.height / 2) / Math.tan(this.cameraFovRadian); //ウインドウぴったりのカメラ距離
     this.camera.position.z = this.cameraDistance;
     // uniforms変数に反映
-    this.mesh.material.uniforms.uResolution.value.set(this.viewport.width, this.viewport.height);
+    // this.mesh.material.uniforms.uResolution.value.set(this.viewport.width, this.viewport.height);
     // meshのscale設定
-    const scaleX = Math.round(this.viewport.width / this.mesh.geometry.parameters.width * 100) / 100 + 0.01;
-    const scaleY = Math.round(this.viewport.height / this.mesh.geometry.parameters.height * 100) / 100 + 0.01;
-    this.mesh.scale.set(scaleX, scaleY, 1);
+    // const scaleX = Math.round(this.viewport.width / this.mesh.geometry.parameters.width * 100) / 100 + 0.01;
+    // const scaleY = Math.round(this.viewport.height / this.mesh.geometry.parameters.height * 100) / 100 + 0.01;
+    // this.mesh.scale.set(scaleX, scaleY, 1);
   }
 
   _addEvent() {
@@ -179,6 +161,7 @@ class Main {
     .to(this.group.position, {
       x: this.viewport.width * 0.2,
       y: 0,
+      z: this.viewport.width * 0.3,
       duration: 0.8,
       ease: Circ.easeInOut,
     }, '<')
@@ -192,6 +175,11 @@ class Main {
       duration: 0.8,
       ease: Circ.easeInOut,
     }, '<')
+
+    this.isRotaion = true;
+
+    this.uniforms.uColor1.value = new THREE.Color(0xd43f8c);
+    this.uniforms.uColor2.value = new THREE.Color(0x014fc4);
 
     this.mesh.material.wireframe = true;
   }
@@ -207,6 +195,7 @@ class Main {
     .to(this.group.position, {
       x: 0,
       y: -this.viewport.height * 0.4,
+      z: 100,
       duration: 0.8,
       ease: Circ.easeInOut,
     }, '<')
@@ -221,6 +210,11 @@ class Main {
       ease: Circ.easeInOut,
     }, '<')
 
+    this.isRotaion = false;
+
+    this.uniforms.uColor1.value = new THREE.Color(0xf83600);
+    this.uniforms.uColor2.value = new THREE.Color(0xf9d423);
+
     this.mesh.material.wireframe = true;
   }
 
@@ -234,6 +228,7 @@ class Main {
     .to(this.group.position, {
       x: 0,
       y: 0,
+      z: 0,
       duration: 0.8,
       ease: Circ.easeInOut,
     }, '<')
@@ -247,6 +242,11 @@ class Main {
       duration: 0.8,
       ease: Circ.easeInOut,
     }, '<')
+
+    this.isRotaion = false;
+
+    this.uniforms.uColor1.value = new THREE.Color(0xf4d03f);
+    this.uniforms.uColor2.value = new THREE.Color(0x16a085);
 
     this.mesh.material.wireframe = true;
   }

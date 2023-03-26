@@ -505,7 +505,7 @@ template {
 /* ============================================ */
 body {
   font-family: 'Bebas Neue', cursive;
-  background: #222;
+  background: radial-gradient(#333333, #000000);
 }
 
 canvas {
@@ -584,7 +584,7 @@ header {
   align-items: flex-end;
   padding: 3vw 5vw;
   h1 {
-    font-size: 6vw;
+    font-size: 5.5vw;
     color: #fff;
     span {
       font-size: 10vw;
@@ -601,7 +601,7 @@ header {
   align-items: center;
   justify-content: center;
   h1 {
-    font-size: 10vw;
+    font-size: 8vw;
     text-align: center;
     color: #fff;
   }
