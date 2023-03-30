@@ -62,6 +62,7 @@ class Main {
     };
 
     this.clock = new THREE.Clock();
+    this.previousTime = 0;
 
     this.init();
   }
@@ -129,12 +130,17 @@ class Main {
       this.mesh.rotation.y -= 0.001;
     }
 
+    const deltaTime = elapsedTime - this.previousTime;
+    this.previousTime = elapsedTime;
 
     const parallaxX = this.cursor.x;
     const parallaxY = - this.cursor.y;
 
-    this.cameraGroup.position.x = parallaxX * 30;
-    this.cameraGroup.position.y = parallaxY * 30;
+    // this.cameraGroup.position.x = parallaxX * 30;
+    // this.cameraGroup.position.y = parallaxY * 30;
+
+    this.cameraGroup.position.x += ((parallaxX * 40) - this.cameraGroup.position.x) * 0.1;
+    this.cameraGroup.position.y += ((parallaxY * 40) - this.cameraGroup.position.y) * 0.1;
 
     //レンダリング
     this.renderer.render(this.scene, this.camera);
