@@ -28,7 +28,15 @@ class Main {
 
     this.group = new THREE.Group();
 
+    this.cameraGroup = new THREE.Group()
+    this.scene.add(this.cameraGroup)
+
     this.isRotation = true;
+
+    this.cursor = {
+      x: 0,
+      y: 0
+    };
 
     this.uniforms = {
       uTime: {
@@ -72,7 +80,8 @@ class Main {
     this.camera = new THREE.PerspectiveCamera(this.cameraFov, this.viewport.width / this.viewport.height, 1, this.cameraDistance * 2);
     this.camera.position.z = this.cameraDistance;
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-    this.scene.add(this.camera);
+    // this.scene.add(this.camera);
+    this.cameraGroup.add(this.camera);
   }
 
   _setLight() {
@@ -120,6 +129,13 @@ class Main {
       this.mesh.rotation.y -= 0.001;
     }
 
+
+    const parallaxX = this.cursor.x;
+    const parallaxY = - this.cursor.y;
+
+    this.cameraGroup.position.x = parallaxX * 30;
+    this.cameraGroup.position.y = parallaxY * 30;
+
     //レンダリング
     this.renderer.render(this.scene, this.camera);
     requestAnimationFrame(this._update.bind(this));
@@ -146,8 +162,14 @@ class Main {
     // this.mesh.scale.set(scaleX, scaleY, 1);
   }
 
+  _onMousemove(e) {
+    this.cursor.x = e.clientX / this.viewport.width - 0.5;
+    this.cursor.y = e.clientY / this.viewport.height - 0.5;
+  }
+
   _addEvent() {
     window.addEventListener("resize", this._onResize.bind(this));
+    window.addEventListener("mousemove", this._onMousemove.bind(this));
   }
 
 
